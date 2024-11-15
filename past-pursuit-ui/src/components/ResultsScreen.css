@@ -1,0 +1,57 @@
+.results {
+  margin-top: 2rem;
+}
+
+.results p {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.results h3 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.countdown {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+.round-winner {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .results {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .results p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+  }
+
+  .results h3 {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .countdown {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .round-winner {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .actual-date {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+}

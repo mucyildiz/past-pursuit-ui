@@ -1,0 +1,8 @@
+.event {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  text-align: center;
+  word-wrap: break-word;
+}
