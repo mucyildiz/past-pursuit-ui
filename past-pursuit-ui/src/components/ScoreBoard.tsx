@@ -1,45 +1,36 @@
-// ScoreBoard.tsx
+// Scoreboard.tsx
 
 import React from "react";
-import Guess from "../models/Guess";
-import Event from "../models/Event";
-import "./ScoreBoard.css";
-import { formatDate, getDateDifference } from "../utils/dateUtils";
+import "./Scoreboard.css";
 
-interface ScoreBoardProps {
-  playerName: string;
-  score: number;
-  guess: Guess | null;
-  isOpponent?: boolean;
-  event: Event | null;
-  showResults: boolean;
+interface ScoreboardProps {
+  playerScore: number;
+  opponentScore: number;
+  opponentName: string;
 }
 
-const ScoreBoard = ({
-  playerName,
-  score,
-  guess,
-  isOpponent = false,
-  event,
-  showResults,
-}: ScoreBoardProps) => {
+const Scoreboard: React.FC<ScoreboardProps> = ({
+  playerScore,
+  opponentScore,
+  opponentName,
+}) => {
   return (
-    <div className={`score-board ${isOpponent ? "opponent" : "player"}`}>
-      <h2>{playerName}</h2>
-      <div className="big-score">{score}</div>
-      {showResults && guess && event && (
-        <div className="guess-display">
-          <h3>{isOpponent ? `${playerName}'s Guess` : "Your Guess"}</h3>
-          <p className="guess-date">
-            {formatDate(guess.year!, guess.month!, guess.day!)}
-          </p>
-          <p className="guess-difference">
-            {getDateDifference(guess, event)} days off
-          </p>
+    <div className="scoreboard">
+      <div className="scoreboard-team player-team">
+        <div className="team-name">Player</div>
+        <div className="team-score" key={`player-${playerScore}`}>
+          {playerScore}
         </div>
-      )}
+      </div>
+      <div className="scoreboard-divider"></div>
+      <div className="scoreboard-team opponent-team">
+        <div className="team-name">{opponentName}</div>
+        <div className="team-score" key={`opponent-${opponentScore}`}>
+          {opponentScore}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ScoreBoard;
+export default Scoreboard;

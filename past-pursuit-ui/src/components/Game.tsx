@@ -213,22 +213,11 @@ export default function Game() {
 
   return (
     <div className="game-container">
-      {/* Left column: Player's score and guess */}
-      <div className="score-left">
-        <ScoreBoard
-          playerName="Player"
-          score={playerScore}
-          guess={playerGuess}
-          event={event}
-          showResults={showResults}
-        />
-      </div>
-
-      {/* Middle column: Game content */}
+      <div id="logo">Past Pursuit</div>
       <div className="game-content">
         {!gameOver && (
           <div>
-            <h2 className="round">Round {round + 1}</h2>
+            <div className="round">Round {round + 1}</div>
             {event ? (
               <>
                 {!showResults ? (
@@ -260,16 +249,11 @@ export default function Game() {
           </div>
         )}
       </div>
-
-      {/* Right column: Opponent's score and guess */}
-      <div className="score-right">
+      <div className="scoreboard-wrapper">
         <ScoreBoard
-          playerName={opponentName}
-          score={opponentScore}
-          guess={opponentGuess}
-          isOpponent={true}
-          event={event}
-          showResults={showResults}
+          playerScore={playerScore}
+          opponentScore={opponentScore}
+          opponentName={opponentName}
         />
       </div>
     </div>
