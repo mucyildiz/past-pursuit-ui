@@ -2,21 +2,23 @@
 
 /* Container for the entire game layout */
 .game-container {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  padding-bottom: 70px; /* Add padding to prevent content from being hidden behind the scoreboard */
+  padding: 2rem;
+  gap: 2rem;
 }
 
 .scoreboard-wrapper {
-  width: 100%;
   position: fixed;
-  bottom: 1rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
-  z-index: 1000;
+  padding: 1rem;
+  background: linear-gradient(transparent, var(--background-color) 20%);
+  z-index: 10;
 }
 
 /* Left and Right Score Sections */
@@ -49,19 +51,18 @@
 
 /* Game Content Section */
 .game-content {
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 100px; /* Make room for scoreboard */
 }
 
 #logo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 1rem;
-  font-size: 2rem;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary-text-color);
 }
 
 .round {
@@ -118,8 +119,11 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .game-container {
-    flex-direction: column;
-    align-items: center;
+    padding: 1rem;
+  }
+
+  .game-content {
+    margin-bottom: 80px; /* Slightly less space on mobile */
   }
 
   .score-left,
@@ -133,12 +137,6 @@
     align-items: center;
   }
 
-  .game-content {
-    margin-top: 1rem;
-    width: 100%;
-    align-items: center;
-  }
-
   .big-score {
     font-size: 2.5rem;
   }
@@ -148,4 +146,174 @@
   .score-right h2 {
     font-size: 1.2rem;
   }
+}
+
+.countdown {
+  text-align: center;
+  padding: 2rem;
+}
+
+.countdown h1 {
+  font-size: 4rem;
+  margin: 1rem;
+}
+
+.countdown h2 {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.join-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.join-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.join-options button,
+.join-game button,
+.create-game button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #1b263b;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.join-options button:hover {
+  background-color: #2d3f5d;
+}
+
+.join-input {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.join-input input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1.2rem;
+  border: 2px solid #1b263b;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.back-button {
+  margin-top: 20px;
+  background-color: #666 !important;
+}
+
+.game-code {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.game-code h1 {
+  font-size: 3rem;
+  color: #ffd700;
+  margin: 10px 0;
+}
+
+.game-code p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffd700;
+}
+
+.waiting-message {
+  text-align: center;
+  padding: 2rem;
+}
+
+.waiting-message h2 {
+  color: #ffd700;
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.game-over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  margin-bottom: 120px; /* Extra space for scoreboard */
+}
+
+.final-event {
+  text-align: center;
+  max-width: 600px;
+}
+
+.winner-banner {
+  font-size: 3rem;
+  color: #ffd700;
+  text-align: center;
+}
+
+.resetButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: white;
+  margin-top: 1rem;
+  z-index: 20; /* Ensure button stays above scoreboard */
+}
+
+@media (max-width: 768px) {
+  .game-over {
+    margin-bottom: 100px;
+    padding: 1rem;
+  }
+
+  .winner-banner {
+    font-size: 2rem;
+  }
+}
+
+.game-over-buttons {
+  display: flex;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.rematchButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  margin-top: 1rem;
+  z-index: 20;
+}
+
+.rematchButton:hover {
+  background-color: #45a049;
 }

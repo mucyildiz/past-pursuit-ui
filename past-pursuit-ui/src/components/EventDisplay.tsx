@@ -9,15 +9,27 @@ import "./EventDisplay.css";
 interface EventDisplayProps {
   event: Event;
   onGuessSubmit: (guess: Guess) => void;
+  hasSubmitted: boolean;
+  guessTimer: number | null;
 }
 
-const EventDisplay = ({ event, onGuessSubmit }: EventDisplayProps) => {
+export default function EventDisplay({
+  event,
+  onGuessSubmit,
+  hasSubmitted,
+  guessTimer,
+}: EventDisplayProps) {
   return (
     <div className="event-display">
-      <h3 className="event">{event.event}</h3>
-      <Form onSubmit={onGuessSubmit} />
+      <h2>{event.event}</h2>
+      {!hasSubmitted && guessTimer !== null && (
+        <div className="timer-display">Time remaining: {guessTimer}s</div>
+      )}
+      {hasSubmitted ? (
+        <div className="waiting-message">Waiting for other player...</div>
+      ) : (
+        <Form onSubmit={onGuessSubmit} />
+      )}
     </div>
   );
-};
-
-export default EventDisplay;
+}

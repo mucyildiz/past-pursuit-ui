@@ -1,57 +1,214 @@
-.results {
-  margin-top: 2rem;
+/* ResultsScreen.css */
+
+.results-screen {
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.results p {
-  font-size: 1.5rem;
-  margin: 1rem 0;
+.event-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.results h3 {
-  margin-top: 2rem;
-  font-size: 1.5rem;
+.event-description {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.4;
+}
+
+.year-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.player-side,
+.opponent-side,
+.actual-year {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.guess-value,
+.year {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.player-side .guess-value {
+  color: var(--player-color);
+}
+
+.opponent-side .guess-value {
+  color: var(--opponent-color);
+}
+
+.actual-year .year {
+  color: #ffd700;
+}
+
+.difference {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.result-message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.result-message.player-win {
+  color: var(--player-color);
+}
+
+.result-message.opponent-win {
+  color: var(--opponent-color);
+}
+
+.result-message.tie {
+  color: #ffd700; /* Keep gold color for ties */
 }
 
 .countdown {
+  margin-top: 2rem;
   font-size: 1.5rem;
+  color: #666;
+}
+
+.actual-date {
+  font-size: 1.5rem;
+  color: var(--player-color);
+  margin-bottom: 30px;
+}
+
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.next-round-text {
+  font-size: 1.5rem;
+  color: var(--primary-text-color);
+  margin-bottom: 10px;
+}
+
+.countdown-timer {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--player-color);
+}
+
+.event-details {
+  margin: 2rem 0;
+}
+
+.guesses {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.guess {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.game-over {
+  animation: fadeIn 1s ease-in;
+}
+
+.winner-banner {
+  font-size: 3rem;
+  color: #ffd700;
+  margin-bottom: 2rem;
+  animation: pulse 2s infinite;
+}
+
+.final-scores {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
   margin-top: 2rem;
 }
 
-.round-winner {
-  font-size: 3rem;
+.player-final,
+.opponent-final {
+  text-align: center;
+}
+
+.vs {
+  font-size: 2rem;
+  color: #666;
+}
+
+.score {
+  font-size: 4rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.player-final .score {
+  color: #ffd700;
+}
+
+.opponent-final .score {
+  color: #ff4500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 768px) {
-  .results {
-    margin-top: 1rem;
-    text-align: center;
+  .result-message {
+    font-size: 1.5rem;
   }
-
-  .results p {
-    font-size: 1.1rem;
-    margin: 0.5rem 0;
-  }
-
-  .results h3 {
-    margin-top: 1rem;
-    font-size: 1.3rem;
-  }
-
-  .countdown {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-  }
-
-  .round-winner {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-
   .actual-date {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+    font-size: 1.2rem;
+  }
+  .next-round-text {
+    font-size: 1.2rem;
+  }
+  .countdown-timer {
+    font-size: 3rem;
+  }
+  .event-description {
+    font-size: 1.4rem;
+    max-width: 90%;
   }
 }

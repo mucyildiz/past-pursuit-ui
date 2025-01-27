@@ -20,8 +20,6 @@ export default function Form({ onSubmit }: FormProps) {
     defaultValues: {
       player: { name: "Player" },
       year: undefined,
-      month: undefined,
-      day: undefined,
     },
   });
 
@@ -45,29 +43,7 @@ export default function Form({ onSubmit }: FormProps) {
         })}
         className="input"
       />
-      <input
-        type="number"
-        placeholder="Month"
-        {...register("month", {
-          valueAsNumber: true,
-          min: { value: 1, message: "Month must be between 1 and 12." },
-          max: { value: 12, message: "Month must be between 1 and 12." },
-        })}
-        className="input"
-      />
-      <input
-        type="number"
-        placeholder="Day"
-        {...register("day", {
-          valueAsNumber: true,
-          min: { value: 1, message: "Day must be between 1 and 31." },
-          max: { value: 31, message: "Day must be between 1 and 31." },
-        })}
-        className="input"
-      />
       {errors.year && <span>{errors.year.message}</span>}
-      {errors.month && <span>{errors.month.message}</span>}
-      {errors.day && <span>{errors.day.message}</span>}
       {errors.root && <span>{errors.root.message}</span>}
 
       <button type="submit" className="submitButton" disabled={!yearFilled()}>

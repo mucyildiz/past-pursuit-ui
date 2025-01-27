@@ -32,13 +32,5 @@ export const formatDate = (
 };
 
 export const getDateDifference = (guess: Guess, event: Event): number => {
-  const guessDate = new Date(
-    guess.year || 0,
-    (guess.month || 1) - 1,
-    guess.day || 1
-  );
-  const eventDate = new Date(event.year, event.month - 1, event.day);
-  const diffInTime = Math.abs(guessDate.getTime() - eventDate.getTime());
-  const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
-  return diffInDays;
+  return Math.abs(guess.year - event.year);
 };

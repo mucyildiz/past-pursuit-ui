@@ -12,3 +12,62 @@
     font-size: 1.2rem;
   }
 }
+
+.waiting-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 2rem 0;
+}
+
+.timer-display {
+  font-size: 1.2rem;
+  color: #ff4500;
+  margin: 1rem 0;
+  font-weight: bold;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.event-display {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 1.7rem;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  hyphens: auto;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .event-display {
+    padding: 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    max-width: 100%;
+  }
+}
