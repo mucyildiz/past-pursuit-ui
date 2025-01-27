@@ -13,7 +13,7 @@ export interface WebSocketMessage {
   eventType: GameEventType;
   gameCode: string;
   user: User;
-  data?: string;
+  data?: string | null;
   timestamp?: number;
 }
 
@@ -23,12 +23,12 @@ export interface GameState {
   currentState: string;
   currentEvent?: Event;
   playerScores: Record<string, number>;
-  currentGuesses: Record<string, number>;
+  currentGuesses: Record<string, { guess: number; timestamp: number }>;
 }
 
 class WebSocketService {
   private static instance: WebSocketService;
-  private socket: WebSocket;
+  private socket!: WebSocket;
   private messageHandlers: ((data: GameState) => void)[] = [];
   private isConnected: boolean = false;
 

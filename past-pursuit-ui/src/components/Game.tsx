@@ -1,14 +1,6 @@
 // Game.tsx
 
 import React, { useState, useEffect } from "react";
-import Form from "./Form";
-import Guess from "../models/Guess";
-import Event from "../models/Event";
-import "./Game.css";
-import ScoreBoard from "./ScoreBoard";
-import ResultsScreen from "./ResultsScreen";
-import EventDisplay from "./EventDisplay";
-import { getDateDifference } from "../utils/dateUtils";
 import {
   webSocketService,
   GameState,
@@ -18,8 +10,10 @@ import { generateGameCode } from "../utils/gameUtils";
 import User from "../models/User";
 import Login from "./Login";
 import GameContent from "./GameContent";
-
-const EVENTS_URL: string = "http://localhost:8080/past-pursuit/events";
+import Event from "../models/Event";
+import Guess from "../models/Guess";
+import "./Game.css";
+import ScoreBoard from "./ScoreBoard";
 
 export default function Game() {
   const [gameOver, setGameOver] = useState(false);
@@ -129,6 +123,7 @@ export default function Game() {
         case "ROUND_OVER":
           if (!completedEvent) {
             console.error("completedEvent is null during ROUND_OVER");
+            return;
           }
           setWaitingForOpponent(false);
           setShowResults(true);
@@ -343,26 +338,6 @@ export default function Game() {
       if (timer) clearTimeout(timer);
     };
   }, [guessTimer, hasSubmitted, currentUser, gameCode]);
-
-  const getRoundWinner = (playerGuesses: Guess[], event: Event): string => {
-    let currWinner = "";
-    let currWinnerDiff = Number.MAX_VALUE;
-    playerGuesses.forEach((guess) => {
-      const guessDiff = getDateDifference(guess, event);
-      if (guessDiff < currWinnerDiff) {
-        currWinner = guess.player.name;
-        currWinnerDiff = guessDiff;
-      }
-    });
-    return currWinner;
-  };
-
-  const getOpponentGuess = (): Guess => {
-    return {
-      player: { name: opponentName },
-      year: Math.floor(Math.random() * 2023),
-    };
-  };
 
   const onGuessSubmit = (guess: Guess) => {
     if (!event) return;
