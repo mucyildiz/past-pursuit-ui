@@ -8,7 +8,6 @@ interface GameContentProps {
   gameOver: boolean;
   round: number;
   showResults: boolean;
-  completedEvent: Event | null;
   event: Event | null;
   waitingForOpponent: boolean;
   result: string;
@@ -24,13 +23,15 @@ interface GameContentProps {
   resetGame: () => void;
   guessTimer: number | null;
   onRematch: () => void;
+  rematchProposed: boolean;
+  rematchVotes: number;
+  totalPlayers: number;
 }
 
 export default function GameContent({
   gameOver,
   round,
   showResults,
-  completedEvent,
   event,
   waitingForOpponent,
   result,
@@ -46,6 +47,9 @@ export default function GameContent({
   resetGame,
   guessTimer,
   onRematch,
+  rematchProposed,
+  rematchVotes,
+  totalPlayers,
 }: GameContentProps) {
   if (gameOver && event) {
     return (
@@ -61,8 +65,16 @@ export default function GameContent({
           <p className="event-year">Correct year: {event.year}</p>
         </div>
         <div className="game-over-buttons">
-          <button onClick={onRematch} className="rematchButton">
+          <button
+            onClick={onRematch}
+            className={`rematchButton ${rematchProposed ? "proposed" : ""}`}
+          >
             Rematch
+            {rematchProposed && (
+              <span className="rematch-badge">
+                {rematchVotes}/{totalPlayers}
+              </span>
+            )}
           </button>
           <button onClick={resetGame} className="resetButton">
             New Game
@@ -73,11 +85,10 @@ export default function GameContent({
   }
 
   return (
-    <div>
+    <div className="content">
       <div className="round">Round {round + 1}</div>
       <GameDisplay
         showResults={showResults}
-        completedEvent={completedEvent}
         event={event}
         waitingForOpponent={waitingForOpponent}
         result={result}
@@ -97,7 +108,6 @@ export default function GameContent({
 
 interface GameDisplayProps {
   showResults: boolean;
-  completedEvent: Event | null;
   event: Event | null;
   waitingForOpponent: boolean;
   result: string;
@@ -114,7 +124,6 @@ interface GameDisplayProps {
 
 function GameDisplay({
   showResults,
-  completedEvent,
   event,
   waitingForOpponent,
   result,
@@ -128,11 +137,11 @@ function GameDisplay({
   gameOver,
   guessTimer,
 }: GameDisplayProps) {
-  if (showResults && completedEvent) {
+  if (showResults) {
     return (
       <ResultsScreen
         resultMessage={result}
-        event={completedEvent}
+        event={event}
         countdown={countdown}
         gameOver={gameOver}
         playerGuess={playerGuess?.year}

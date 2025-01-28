@@ -1,6 +1,6 @@
 // Game.tsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   webSocketService,
   GameState,
@@ -48,14 +48,15 @@ export default function Game() {
   );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [waitingForOpponent, setWaitingForOpponent] = useState(false);
-  const [completedEvent, setCompletedEvent] = useState<Event | null>(null);
   const [guessTimer, setGuessTimer] = useState<number | null>(null);
+  const [rematchProposed, setRematchProposed] = useState(false);
+  const [rematchVotes, setRematchVotes] = useState(0);
+  const [rematchTimer, setRematchTimer] = useState<number | null>(null);
 
-  useEffect(() => {
-    const handleGameState = (gameState: GameState) => {
+  const handleGameState = useCallback(
+    (gameState: GameState) => {
       if (gameState.gameCode !== gameCode) return;
       console.log("Received game state:", gameState.currentState);
-      console.log("completedEvent:", completedEvent);
 
       // Set current user info when we find ourselves in the users array
       const user = gameState.users.find((u) => u.name === playerName);
@@ -91,7 +92,6 @@ export default function Game() {
           setCountdown(3);
           setHasSubmitted(false);
           setWaitingForOpponent(false);
-          setCompletedEvent(null);
           setGuessTimer(null);
           // Start new game countdown - use gameStartCountdown instead of countdown
           setGameStartCountdown(3);
@@ -104,9 +104,16 @@ export default function Game() {
           setHasSubmitted(false);
           setPlayerGuess(null);
           setOpponentGuess(null);
-          setEvent(gameState.currentEvent || null);
-          if (gameState.currentEvent) {
-            setCompletedEvent(gameState.currentEvent);
+          if (gameState.currentEvent && gameState.currentEvent !== event) {
+            console.log("old event:", event);
+            console.log("Setting event to:", gameState.currentEvent);
+            setEvent(gameState.currentEvent || null);
+          } else {
+            console.debug(
+              "No new event. Relevant debugging info: ",
+              gameState,
+              event
+            );
           }
           setGuessTimer(null);
 
@@ -121,14 +128,10 @@ export default function Game() {
           }
           break;
         case "ROUND_OVER":
-          if (!completedEvent) {
-            console.error("completedEvent is null during ROUND_OVER");
-            return;
-          }
+          console.log("We got the round over event. Current event:", event);
           setWaitingForOpponent(false);
           setShowResults(true);
           setHasSubmitted(false);
-          setEvent(null);
           setGuessTimer(null);
 
           // Update scores based on gameState
@@ -162,8 +165,8 @@ export default function Game() {
           } else if (opponentGuess === null) {
             setResult("You win - opponent ran out of time!");
           } else {
-            const playerDiff = Math.abs(playerGuess - completedEvent.year);
-            const opponentDiff = Math.abs(opponentGuess - completedEvent.year);
+            const playerDiff = Math.abs(playerGuess - event.year);
+            const opponentDiff = Math.abs(opponentGuess - event.year);
 
             if (playerDiff < opponentDiff) {
               setResult(
@@ -237,22 +240,29 @@ export default function Game() {
           setCountdown(3);
           setHasSubmitted(false);
           setWaitingForOpponent(false);
-          setCompletedEvent(null);
           setGuessTimer(null);
           // Take user back to game selection screen
           setIsJoining(true);
           setJoinFlow("initial");
           setGameCode("");
           break;
+        case "REMATCH_PROPOSED":
+          setRematchProposed(true);
+          setRematchVotes(1);
+          setRematchTimer(30);
+          break;
       }
-    };
+    },
+    [gameCode, playerName, currentUser]
+  );
 
+  useEffect(() => {
     webSocketService.addMessageHandler(handleGameState);
 
     return () => {
       webSocketService.removeMessageHandler(handleGameState);
     };
-  }, [gameCode, playerName, currentUser]);
+  }, [handleGameState]);
 
   useEffect(() => {
     if (gameStartCountdown === null) return;
@@ -294,6 +304,7 @@ export default function Game() {
           setOpponentGuess(null);
           setCountdown(3);
 
+          // Only send ROUND_START when countdown is complete
           if (!currentUser) return;
           webSocketService.sendMessage({
             eventType: GameEventType.ROUND_START,
@@ -307,7 +318,7 @@ export default function Game() {
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [showResults, countdown, gameOver, currentUser, gameCode]);
+  }, [countdown, showResults, gameOver, currentUser, gameCode]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -338,6 +349,28 @@ export default function Game() {
       if (timer) clearTimeout(timer);
     };
   }, [guessTimer, hasSubmitted, currentUser, gameCode]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (rematchTimer !== null && rematchTimer > 0) {
+      timer = setTimeout(() => {
+        setRematchTimer((prev) => prev! - 1);
+      }, 1000);
+    } else if (rematchTimer === 0) {
+      // Time's up - return to home screen
+      setRematchProposed(false);
+      setRematchVotes(0);
+      setRematchTimer(null);
+      setIsJoining(true);
+      setJoinFlow("initial");
+      setGameCode("");
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [rematchTimer]);
 
   const onGuessSubmit = (guess: Guess) => {
     if (!event) return;
@@ -381,7 +414,6 @@ export default function Game() {
     setCountdown(3);
     setHasSubmitted(false);
     setWaitingForOpponent(false);
-    setCompletedEvent(null);
     setGuessTimer(null);
     setIsJoining(true);
     setJoinFlow("initial");
@@ -421,7 +453,7 @@ export default function Game() {
   const handleRematch = () => {
     if (!currentUser) return;
     webSocketService.sendMessage({
-      eventType: GameEventType.REMATCH,
+      eventType: GameEventType.REMATCH_PROPOSAL,
       gameCode: gameCode,
       user: currentUser,
       timestamp: new Date().getTime(),
@@ -485,14 +517,23 @@ export default function Game() {
                         <p>Share this code with your opponent:</p>
                         <h1>{gameCode}</h1>
                       </div>
-                      {!gameCode && (
-                        <button
-                          className="back-button"
-                          onClick={() => setJoinFlow("initial")}
-                        >
-                          Back
-                        </button>
-                      )}
+                      <button
+                        className="back-button"
+                        onClick={() => {
+                          if (currentUser) {
+                            webSocketService.sendMessage({
+                              eventType: GameEventType.PLAYER_LEFT,
+                              gameCode: gameCode,
+                              user: currentUser,
+                              timestamp: new Date().getTime(),
+                            });
+                          }
+                          setJoinFlow("initial");
+                          setGameCode("");
+                        }}
+                      >
+                        Back
+                      </button>
                     </div>
                   )}
                 </>
@@ -504,7 +545,6 @@ export default function Game() {
                 gameOver={gameOver}
                 round={round}
                 showResults={showResults}
-                completedEvent={completedEvent}
                 event={event}
                 waitingForOpponent={waitingForOpponent}
                 result={result}
@@ -520,6 +560,9 @@ export default function Game() {
                 resetGame={resetGame}
                 guessTimer={guessTimer}
                 onRematch={handleRematch}
+                rematchProposed={rematchProposed}
+                rematchVotes={rematchVotes}
+                totalPlayers={2}
               />
             </div>
           )}

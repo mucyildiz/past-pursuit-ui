@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="e.swsh" format="1">
+  <advance width="473"/>
+  <outline>
+    <contour>
+      <point x="414" y="166" type="line"/>
+      <point x="224" y="186"/>
+      <point x="129" y="225"/>
+      <point x="87" y="274" type="curve"/>
+      <point x="467" y="377" type="line"/>
+      <point x="459" y="420" type="line"/>
+      <point x="403" y="405" type="line"/>
+      <point x="361" y="448"/>
+      <point x="345" y="493"/>
+      <point x="345" y="529" type="curve" smooth="yes"/>
+      <point x="345" y="585"/>
+      <point x="372" y="612"/>
+      <point x="418" y="645" type="curve"/>
+      <point x="397" y="673" type="line"/>
+      <point x="357" y="653"/>
+      <point x="323" y="628"/>
+      <point x="293" y="600" type="curve"/>
+      <point x="135" y="590"/>
+      <point x="20" y="473"/>
+      <point x="20" y="329" type="curve" smooth="yes"/>
+      <point x="20" y="191"/>
+      <point x="110" y="42"/>
+      <point x="388" y="-13" type="curve"/>
+    </contour>
+    <contour>
+      <point x="59" y="349" type="curve" smooth="yes"/>
+      <point x="59" y="401"/>
+      <point x="96" y="451"/>
+      <point x="164" y="451" type="curve" smooth="yes"/>
+      <point x="183" y="451"/>
+      <point x="200" y="448"/>
+      <point x="212" y="443" type="curve"/>
+      <point x="218" y="416"/>
+      <point x="228" y="389"/>
+      <point x="245" y="362" type="curve"/>
+      <point x="64" y="314" type="line"/>
+      <point x="61" y="325"/>
+      <point x="59" y="337"/>
+    </contour>
+  </outline>
+</glyph>

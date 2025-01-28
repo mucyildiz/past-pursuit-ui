@@ -21,7 +21,9 @@ export default function EventDisplay({
 }: EventDisplayProps) {
   return (
     <div className="event-display">
-      <h2>{event.event}</h2>
+      <div className="event-text-container">
+        <div className="event-text">{event.event}</div>
+      </div>
       {!hasSubmitted && guessTimer !== null && (
         <div className="timer-display">Time remaining: {guessTimer}s</div>
       )}

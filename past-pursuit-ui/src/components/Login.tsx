@@ -40,7 +40,7 @@ export default function Login({ onLogin }: LoginProps) {
 
   return (
     <div className="login-container">
-      <h1>Past Pursuit</h1>
+      <h1 id="logo">Past Pursuit</h1>
       <div className="login-box">
         <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
         <form onSubmit={handleSubmit}>

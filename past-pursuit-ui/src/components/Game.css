@@ -5,8 +5,22 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center horizontally */
   padding: 2rem;
-  gap: 2rem;
+  gap: 3rem;
+  width: 100%;
+  max-width: 1200px; /* Add max-width */
+  margin: 0 auto; /* Center the container itself */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px; /* This will be the single source of width constraint */
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .scoreboard-wrapper {
@@ -55,32 +69,60 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 100px; /* Make room for scoreboard */
+  width: 100%;
+  padding: 0 2rem;
+}
+
+@font-face {
+  font-family: "Trickster";
+  src: url("../assets/fonts/Trickster-master/webfonts/Trickster-Regular.woff2")
+      format("woff2"),
+    url("../assets/fonts/Trickster-master/webfonts/Trickster-Regular.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fantasie";
+  src: url("../assets/fonts/fantasieartistique/FantasieArtistique.otf")
+      format("opentype"),
+    url("../assets/fonts/fantasieartistique/FantasieArtistique.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 #logo {
   text-align: center;
   font-size: 2.5rem;
-  font-weight: bold;
   color: var(--primary-text-color);
+  width: 100%;
+  font-family: "Trickster", sans-serif;
+  letter-spacing: 2px;
 }
 
+/* Remove any absolute positioning or floating that might affect centering */
 .round {
-  font-size: 2rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 1rem;
+  font-size: 1.8rem;
+  text-align: center;
+  margin: 1rem 0 3rem;
+  color: #ffd700;
+  width: 100%;
+  font-family: "Trickster", sans-serif;
+  letter-spacing: 1px;
 }
 
 /* Event description styling */
 .event {
   width: 100%;
-  max-width: 600px;
-  margin-bottom: 2rem;
-  font-size: 5rem;
+  margin: 2rem auto;
+  font-size: 2rem;
   text-align: center;
-  word-wrap: break-word;
+
+  white-space: normal;
+  line-height: 1.4;
+  padding: 0 2rem;
 }
 
 /* Result message styling */
@@ -103,6 +145,7 @@
 /* Reset button styling */
 .resetButton {
   padding: 0.75rem 1.5rem;
+  font-family: "Trickster", sans-serif;
   font-size: 1.2rem;
   border: none;
   border-radius: 0.25rem;
@@ -120,10 +163,20 @@
 @media (max-width: 768px) {
   .game-container {
     padding: 1rem;
+    gap: 2rem;
   }
 
   .game-content {
-    margin-bottom: 80px; /* Slightly less space on mobile */
+    padding: 0 1rem;
+  }
+
+  #logo {
+    padding: 0 1rem;
+  }
+
+  .event {
+    font-size: 1.5rem;
+    padding: 0 1rem;
   }
 
   .score-left,
@@ -146,9 +199,15 @@
   .score-right h2 {
     font-size: 1.2rem;
   }
+
+  .round {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .countdown {
+  font-family: "Trickster", sans-serif;
   text-align: center;
   padding: 2rem;
 }
@@ -182,8 +241,9 @@
 }
 
 .join-options button,
-.join-game button,
-.create-game button {
+.join-game button:not(.back-button),
+.create-game button:not(.back-button) {
+  font-family: "Trickster", sans-serif;
   padding: 15px 30px;
   font-size: 1.2rem;
   border: none;
@@ -193,6 +253,14 @@
   cursor: pointer;
   width: 100%;
   transition: background-color 0.2s;
+}
+
+.join-game h2 {
+  font-family: "Fantasie", serif;
+}
+
+.create-game h2 {
+  font-family: "Fantasie", serif;
 }
 
 .join-options button:hover {
@@ -216,13 +284,26 @@
 }
 
 .back-button {
-  margin-top: 20px;
   background-color: #666 !important;
+  font-family: "Fantasie", serif !important;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #555 !important;
 }
 
 .game-code {
+  font-family: "Fantasie", serif;
   text-align: center;
-  margin: 20px 0;
 }
 
 .game-code h1 {
@@ -236,21 +317,29 @@
   margin-bottom: 10px;
 }
 
-h2 {
+.countdown-title {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.game-code-title {
   text-align: center;
   margin-bottom: 20px;
   color: #ffd700;
 }
 
+.waiting-title {
+  color: #ffd700;
+  font-size: 1.5rem;
+}
+
 .waiting-message {
   text-align: center;
-  padding: 2rem;
 }
 
 .waiting-message h2 {
   color: #ffd700;
   font-size: 1.5rem;
-  margin: 1rem;
 }
 
 .game-over {
@@ -265,12 +354,15 @@ h2 {
 .final-event {
   text-align: center;
   max-width: 600px;
+  font-size: 1.5rem;
+  font-family: "Fantasie", serif;
 }
 
 .winner-banner {
   font-size: 3rem;
   color: #ffd700;
   text-align: center;
+  font-family: "Trickster", sans-serif;
 }
 
 .resetButton {
@@ -305,6 +397,7 @@ h2 {
 .rematchButton {
   padding: 0.75rem 1.5rem;
   font-size: 1.2rem;
+  font-family: "Trickster", sans-serif;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -316,4 +409,32 @@ h2 {
 
 .rematchButton:hover {
   background-color: #45a049;
+}
+
+.rematch-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4500;
+  color: white;
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.rematchButton {
+  position: relative;
+}
+
+.rematchButton.proposed {
+  animation: pulse 1s infinite;
+}
+
+/* Update event display within content */
+.event-display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

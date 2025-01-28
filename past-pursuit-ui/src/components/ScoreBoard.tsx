@@ -23,7 +23,7 @@ const Scoreboard: React.FC<ScoreBoardProps> = ({
   return (
     <div className="scoreboard">
       <div className="player-score">
-        <h2>{playerName}</h2>
+        <div className="scoreboard-name">{playerName}</div>
         {playerRecord && (
           <div className="player-record">
             ({playerRecord.wins}-{playerRecord.losses})
@@ -32,7 +32,7 @@ const Scoreboard: React.FC<ScoreBoardProps> = ({
         <div className="big-score">{playerScore}</div>
       </div>
       <div className="opponent-score">
-        <h2>{opponentName}</h2>
+        <div className="scoreboard-name">{opponentName}</div>
         {opponentRecord && (
           <div className="player-record">
             ({opponentRecord.wins}-{opponentRecord.losses})
