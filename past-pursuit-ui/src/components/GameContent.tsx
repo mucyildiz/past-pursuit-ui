@@ -54,7 +54,9 @@ export default function GameContent({
   if (gameOver && event) {
     return (
       <div className="game-over">
-        <h1 className="winner-banner">
+        <h1
+          className={`winner-banner ${playerScore === 4 ? "" : "opponent-win"}`}
+        >
           {playerScore === 4
             ? "Congratulations! You've Won!"
             : `${opponentName} Wins!`}

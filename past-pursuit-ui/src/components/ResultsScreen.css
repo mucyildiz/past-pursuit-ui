@@ -2,34 +2,31 @@
 
 .results-screen {
   text-align: center;
-  padding: 2rem;
+  padding: 0.5rem;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .event-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .event-description {
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  line-height: 1.4;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 
 .year-display {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
 .player-side,
@@ -39,13 +36,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .guess-value,
 .year {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0;
 }
 
 .player-side .guess-value {
@@ -61,30 +63,28 @@
 }
 
 .difference {
+  font-size: 0.9rem;
   color: #666;
-  font-size: 1.1rem;
 }
 
 .result-message {
-  margin-top: 1rem;
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
   font-weight: bold;
-}
-
-.result-message.player-win {
-  color: var(--player-color);
+  font-family: "Fantasie", serif;
 }
 
 .result-message.opponent-win {
-  color: var(--opponent-color);
+  color: #ff4500; /* Red for opponent wins */
 }
 
-.result-message.tie {
-  color: #ffd700; /* Keep gold color for ties */
+.result-message:not(.opponent-win) {
+  color: #ffd700; /* Gold for player wins and ties */
 }
 
 .countdown {
-  margin-top: 2rem;
-  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
   color: #666;
 }
 

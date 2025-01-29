@@ -60,11 +60,7 @@ export default function ResultsScreen({
             <div className="year">{event.year}</div>
             <div
               className={`result-message ${
-                resultMessage.includes("You've won")
-                  ? "player-win"
-                  : resultMessage.includes("has won")
-                  ? "opponent-win"
-                  : "tie"
+                resultMessage.includes("You") ? "player-win" : "opponent-win"
               }`}
             >
               {resultMessage}

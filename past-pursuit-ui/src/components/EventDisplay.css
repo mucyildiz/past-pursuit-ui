@@ -1,9 +1,9 @@
 .event-display {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 1rem;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .event-text-container {
@@ -13,14 +13,15 @@
 }
 
 .event-text {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   text-align: center;
   white-space: pre-wrap;
-  margin-bottom: 2rem;
+  margin: 0.5rem 0;
   width: 100%;
   font-weight: bold;
   font-family: "Fantasie", serif;
   letter-spacing: 0.5px;
+  line-height: 1.3;
 }
 
 @media (max-width: 768px) {
@@ -63,5 +64,23 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-height: 800px) {
+  .event-text {
+    font-size: 1.2rem;
+    margin: 0.25rem 0;
+  }
+
+  .input {
+    padding: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .submitButton {
+    padding: 0.5rem;
+    margin: 0.25rem 0;
   }
 }

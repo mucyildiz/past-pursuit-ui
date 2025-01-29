@@ -2,13 +2,15 @@
   background-color: var(--background-color);
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  padding: 0.5rem 2rem; /* Reduced vertical padding */
+  padding: 0.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 80%;
   max-width: 800px;
   z-index: 1; /* Ensure scoreboard stays below other elements */
+  position: static; /* Remove fixed positioning */
+  margin-top: auto; /* Push to bottom but not fixed */
 }
 
 .player-info,
@@ -64,9 +66,9 @@
 }
 
 .big-score {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: 2rem; /* Slightly smaller */
   font-weight: bold;
-  margin: clamp(5px, 2vw, 10px) 0 clamp(2%, 3vw, 5%);
+  margin: 0.25rem 0;
   font-family: "Trickster", sans-serif;
   letter-spacing: 2px;
 }
@@ -80,7 +82,7 @@
 }
 
 .player-record {
-  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  font-size: 0.8rem;
   opacity: 0.8;
 }
 

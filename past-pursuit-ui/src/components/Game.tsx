@@ -53,10 +53,19 @@ export default function Game() {
   const [rematchVotes, setRematchVotes] = useState(0);
   const [rematchTimer, setRematchTimer] = useState<number | null>(null);
 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      setCurrentUser(user);
+      setPlayerName(user.name);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleGameState = useCallback(
     (gameState: GameState) => {
       if (gameState.gameCode !== gameCode) return;
-      console.log("Received game state:", gameState.currentState);
 
       // Set current user info when we find ourselves in the users array
       const user = gameState.users.find((u) => u.name === playerName);
@@ -78,8 +87,6 @@ export default function Game() {
           setEvent(null);
           break;
         case "GAME_START":
-          console.log("Starting countdown");
-          // Reset game state
           setGameOver(false);
           setResult("");
           setRound(0);
@@ -93,48 +100,38 @@ export default function Game() {
           setHasSubmitted(false);
           setWaitingForOpponent(false);
           setGuessTimer(null);
-          // Start new game countdown - use gameStartCountdown instead of countdown
           setGameStartCountdown(3);
-          setIsJoining(true); // Add this to show the countdown screen
+          setIsJoining(true);
           break;
         case "WAITING_FOR_GUESSES":
-          console.log("game state", gameState);
           setWaitingForOpponent(false);
           setShowResults(false);
           setHasSubmitted(false);
           setPlayerGuess(null);
           setOpponentGuess(null);
-          if (gameState.currentEvent && gameState.currentEvent !== event) {
-            console.log("old event:", event);
-            console.log("Setting event to:", gameState.currentEvent);
-            setEvent(gameState.currentEvent || null);
-          } else {
-            console.debug(
-              "No new event. Relevant debugging info: ",
-              gameState,
-              event
-            );
+          if (gameState.currentEvent) {
+            setEvent(gameState.currentEvent);
           }
           setGuessTimer(null);
 
-          // Update scores
           const currentId = currentUser?.id;
           if (currentId !== undefined) {
-            setPlayerScore(gameState.playerScores[currentId]);
+            const playerScore = gameState.playerScores[currentId];
+            setPlayerScore(playerScore);
             const opponent = gameState.users.find((u) => u.id !== currentId);
             if (opponent) {
-              setOpponentScore(gameState.playerScores[opponent.id]);
+              const opponentScore = gameState.playerScores[opponent.id];
+              setOpponentScore(opponentScore);
+              setRound(playerScore + opponentScore);
             }
           }
           break;
         case "ROUND_OVER":
-          console.log("We got the round over event. Current event:", event);
           setWaitingForOpponent(false);
           setShowResults(true);
           setHasSubmitted(false);
           setGuessTimer(null);
 
-          // Update scores based on gameState
           const scores = gameState.playerScores;
           const users = gameState.users;
           const guesses = gameState.currentGuesses;
@@ -144,11 +141,9 @@ export default function Game() {
           const opponentUser = users.find((u) => u.id !== currentUserId);
           if (!opponentUser) return;
 
-          // Update scores immediately
           setPlayerScore(scores[currentUserId]);
           setOpponentScore(scores[opponentUser.id]);
 
-          // Set opponent's guess - handle new guess format
           setOpponentGuess({
             player: { name: opponentUser.name },
             year: guesses[opponentUser.id].guess,
@@ -157,54 +152,36 @@ export default function Game() {
           const playerGuess = guesses[currentUserId]?.guess;
           const opponentGuess = guesses[opponentUser.id]?.guess;
 
-          // Set result message based on guesses
           if (playerGuess === null && opponentGuess === null) {
             setResult("It's a tie - both players ran out of time!");
           } else if (playerGuess === null) {
-            setResult(`${opponentUser.name} wins - you ran out of time!`);
+            setResult(`${opponentUser.name} wins!`);
           } else if (opponentGuess === null) {
-            setResult("You win - opponent ran out of time!");
+            setResult("You win!");
           } else {
             const playerDiff = Math.abs(playerGuess - event.year);
             const opponentDiff = Math.abs(opponentGuess - event.year);
 
             if (playerDiff < opponentDiff) {
-              setResult(
-                `You win! (${playerDiff} years off vs ${opponentDiff})`
-              );
+              setResult("You win!");
             } else if (opponentDiff < playerDiff) {
-              setResult(
-                `${opponentUser.name} wins! (${opponentDiff} years off vs ${playerDiff})`
-              );
+              setResult(`${opponentUser.name} wins!`);
             } else {
-              // It's a tie in years - check timestamps
               const playerTimestamp = guesses[currentUserId].timestamp;
               const opponentTimestamp = guesses[opponentUser.id].timestamp;
-              const timeDiff = Math.abs(playerTimestamp - opponentTimestamp);
 
               if (playerTimestamp < opponentTimestamp) {
-                setResult(
-                  `You win! (Both ${playerDiff} years off - you guessed ${(
-                    timeDiff / 1000
-                  ).toFixed(1)}s faster)`
-                );
+                setResult("You win!");
               } else if (opponentTimestamp < playerTimestamp) {
-                setResult(
-                  `${
-                    opponentUser.name
-                  } wins! (Both ${playerDiff} years off - guessed ${(
-                    timeDiff / 1000
-                  ).toFixed(1)}s faster)`
-                );
+                setResult(`${opponentUser.name} wins!`);
               } else {
-                setResult("It's a perfect tie!"); // Extremely unlikely
+                setResult("It's a perfect tie!");
               }
             }
           }
           break;
         case "GAME_OVER":
           setGameOver(true);
-          // Update final scores
           const finalScores = gameState.playerScores;
           const finalCurrentUserId = currentUser?.id;
           if (finalCurrentUserId !== undefined) {
@@ -221,13 +198,11 @@ export default function Game() {
           const timerUserId = currentUser?.id;
           if (timerUserId === undefined) return;
 
-          // Only start timer if we haven't guessed yet
           if (!gameState.currentGuesses[timerUserId]) {
             setGuessTimer(5);
           }
           break;
         case "GAME_EXIT":
-          // Reset game state
           setGameOver(false);
           setResult("");
           setRound(0);
@@ -241,7 +216,6 @@ export default function Game() {
           setHasSubmitted(false);
           setWaitingForOpponent(false);
           setGuessTimer(null);
-          // Take user back to game selection screen
           setIsJoining(true);
           setJoinFlow("initial");
           setGameCode("");
@@ -253,7 +227,7 @@ export default function Game() {
           break;
       }
     },
-    [gameCode, playerName, currentUser]
+    [gameCode, playerName, currentUser, event]
   );
 
   useEffect(() => {
@@ -266,7 +240,6 @@ export default function Game() {
 
   useEffect(() => {
     if (gameStartCountdown === null) return;
-    console.log("Countdown value:", gameStartCountdown);
 
     if (gameStartCountdown > 0) {
       const timer = setTimeout(() => {
@@ -274,7 +247,6 @@ export default function Game() {
       }, 1000);
       return () => clearTimeout(timer);
     } else {
-      console.log("Sending ROUND_START");
       const userInfo = { id: 0, name: playerName, wins: 0, losses: 0 };
       webSocketService.sendMessage({
         eventType: GameEventType.ROUND_START,
@@ -291,27 +263,23 @@ export default function Game() {
 
     if (showResults && !gameOver) {
       if (countdown > 0) {
-        // Set a full 1-second delay
         timer = setTimeout(() => {
           setCountdown((prevCountdown) => prevCountdown - 1);
         }, 1000);
       } else {
-        // Only proceed after countdown is fully complete
         setTimeout(() => {
           setShowResults(false);
-          setRound((prevRound) => prevRound + 1);
           setPlayerGuess(null);
           setOpponentGuess(null);
           setCountdown(3);
 
-          // Only send ROUND_START when countdown is complete
           if (!currentUser) return;
           webSocketService.sendMessage({
             eventType: GameEventType.ROUND_START,
             gameCode: gameCode,
             user: currentUser,
           });
-        }, 1000); // Add delay before starting next round
+        }, 1000);
       }
     }
 
@@ -329,7 +297,6 @@ export default function Game() {
           setGuessTimer((prev) => prev! - 1);
         }, 1000);
       } else {
-        // Time's up - auto submit if we haven't already
         if (!hasSubmitted && currentUser) {
           webSocketService.sendMessage({
             eventType: GameEventType.GUESS,
@@ -358,7 +325,6 @@ export default function Game() {
         setRematchTimer((prev) => prev! - 1);
       }, 1000);
     } else if (rematchTimer === 0) {
-      // Time's up - return to home screen
       setRematchProposed(false);
       setRematchVotes(0);
       setRematchTimer(null);
@@ -401,7 +367,6 @@ export default function Game() {
         timestamp: new Date().getTime(),
       });
     }
-    // Reset game state instead of reloading
     setGameOver(false);
     setResult("");
     setRound(0);
@@ -422,7 +387,6 @@ export default function Game() {
 
   const startNewGame = () => {
     const code = generateGameCode();
-    console.log("Starting new game with code:", code);
     setGameCode(code);
     if (!currentUser) return;
     webSocketService.sendMessage({
@@ -434,7 +398,6 @@ export default function Game() {
   };
 
   const joinGame = (code: string) => {
-    console.log("Joining game with code:", code);
     setGameCode(code);
     if (!currentUser) return;
     webSocketService.sendMessage({
@@ -448,6 +411,30 @@ export default function Game() {
     setPlayerName(user.name);
     setCurrentUser(user);
     setIsLoggedIn(true);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setPlayerName("");
+    setIsLoggedIn(false);
+    localStorage.removeItem("user");
+    setGameOver(false);
+    setResult("");
+    setRound(0);
+    setPlayerScore(0);
+    setOpponentScore(0);
+    setEvent(null);
+    setOpponentGuess(null);
+    setPlayerGuess(null);
+    setShowResults(false);
+    setCountdown(3);
+    setHasSubmitted(false);
+    setWaitingForOpponent(false);
+    setGuessTimer(null);
+    setIsJoining(true);
+    setJoinFlow("initial");
+    setGameCode("");
   };
 
   const handleRematch = () => {
@@ -466,6 +453,11 @@ export default function Game() {
         <Login onLogin={handleLogin} />
       ) : (
         <div className="game-container">
+          {isJoining && joinFlow === "initial" && (
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          )}
           <div id="logo">Past Pursuit</div>
           {isJoining ? (
             <div className="join-container">
