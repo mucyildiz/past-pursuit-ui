@@ -4,7 +4,6 @@ import React from "react";
 import Event from "../models/Event";
 
 import "./ResultsScreen.css";
-import { formatDate } from "../utils/dateUtils";
 
 interface ResultsScreenProps {
   resultMessage: string;
@@ -34,10 +33,6 @@ export default function ResultsScreen({
       </div>
     );
   }
-
-  const getYearDifference = (guess: number) => {
-    return Math.abs(guess - event.year);
-  };
 
   return (
     <div className="results-screen">

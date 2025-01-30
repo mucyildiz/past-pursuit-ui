@@ -17,7 +17,6 @@ interface GameContentProps {
   playerName: string;
   opponentName: string;
   playerScore: number;
-  opponentScore: number;
   onGuessSubmit: (guess: Guess) => void;
   hasSubmitted: boolean;
   resetGame: () => void;
@@ -41,7 +40,6 @@ export default function GameContent({
   playerName,
   opponentName,
   playerScore,
-  opponentScore,
   onGuessSubmit,
   hasSubmitted,
   resetGame,

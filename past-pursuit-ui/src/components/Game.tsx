@@ -27,7 +27,6 @@ export default function Game() {
   const [playerGuess, setPlayerGuess] = useState<Guess | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [countdown, setCountdown] = useState<number>(3);
-  const [nextEvent, setNextEvent] = useState<Event | null>(null);
   const [gameCode, setGameCode] = useState<string>("");
   const [isJoining, setIsJoining] = useState(true);
   const [inputGameCode, setInputGameCode] = useState("");
@@ -158,7 +157,7 @@ export default function Game() {
             setResult(`${opponentUser.name} wins!`);
           } else if (opponentGuess === null) {
             setResult("You win!");
-          } else {
+          } else if (event) {
             const playerDiff = Math.abs(playerGuess - event.year);
             const opponentDiff = Math.abs(opponentGuess - event.year);
 
