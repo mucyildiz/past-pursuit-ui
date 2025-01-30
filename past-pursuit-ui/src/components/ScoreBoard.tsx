@@ -1,7 +1,7 @@
 // Scoreboard.tsx
 
 import React from "react";
-import "./Scoreboard.css";
+import "./ScoreBoard.css";
 
 interface ScoreBoardProps {
   playerScore: number;
