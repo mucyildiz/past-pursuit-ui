@@ -14,16 +14,19 @@ export default function Login({ onLogin }: LoginProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/past-pursuit/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: username,
-          password: password,
-        }),
-      });
+      const response = await fetch(
+        "http://3.145.150.58:8080/past-pursuit/users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: username,
+            password: password,
+          }),
+        }
+      );
 
       if (response.ok) {
         const user = await response.json();
