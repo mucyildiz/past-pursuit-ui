@@ -46,7 +46,7 @@ class WebSocketService {
 
   private connect() {
     try {
-      this.socket = new WebSocket("ws://localhost:8080/");
+      this.socket = new WebSocket("wss://pastpursuit.io/");
 
       this.socket.onopen = () => {
         console.log("WebSocket connected");
