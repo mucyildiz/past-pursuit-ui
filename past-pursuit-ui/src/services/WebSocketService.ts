@@ -68,12 +68,10 @@ class WebSocketService {
 
       this.socket.onerror = (error) => {
         console.error("WebSocket error:", error);
-        alert("Failed to connect to game server. Please try again later.");
         this.socket.close();
       };
     } catch (error) {
       console.error("Failed to create WebSocket connection:", error);
-      alert("Failed to connect to game server. Please try again later.");
     }
   }
 
