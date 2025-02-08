@@ -90,7 +90,7 @@
 
 #logo {
   text-align: center;
-  font-size: 1.8rem; /* Slightly smaller */
+  font-size: 2.2rem; /* Increased from 1.8rem */
   color: var(--primary-text-color);
   width: 100%;
   font-family: "CormorantUnicase", sans-serif;
@@ -100,7 +100,7 @@
 
 /* Remove any absolute positioning or floating that might affect centering */
 .round {
-  font-size: 1.5rem; /* Slightly smaller */
+  font-size: 1.8rem; /* Increased from 1.5rem */
   text-align: center;
   margin: 0.5rem 0 1rem; /* Reduced margins */
   color: #ffd700;
@@ -113,7 +113,7 @@
 .event {
   width: 100%;
   margin: 2rem auto;
-  font-size: 1.5rem; /* Slightly smaller */
+  font-size: 1.6rem; /* Increased from 1.4rem */
   text-align: center;
 
   white-space: normal;
@@ -143,7 +143,7 @@
 .resetButton {
   padding: 0.75rem 1.5rem;
   font-family: "CormorantUnicase", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Increased from 1.2rem */
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -167,11 +167,11 @@
   }
 
   #logo {
-    padding: 0 1rem;
+    font-size: 1.8rem; /* Increased from 1.5rem */
   }
 
   .event {
-    font-size: 1.5rem;
+    font-size: 1.4rem; /* Increased from 1.2rem */
     padding: 0 1rem;
   }
 
@@ -199,6 +199,10 @@
   .round {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
+  }
+
+  button {
+    font-size: 1.2rem; /* Slightly larger for mobile */
   }
 }
 
@@ -241,7 +245,7 @@
 .create-game button:not(.back-button) {
   font-family: "CormorantUnicase", sans-serif;
   padding: 15px 30px;
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Increased from 1.2rem */
   border: none;
   border-radius: 8px;
   background-color: #1b263b;
@@ -280,7 +284,7 @@
   background-color: #666 !important;
   font-family: "CormorantUnicase", serif !important;
   padding: 15px 30px;
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Increased from 1.2rem */
   border: none;
   border-radius: 8px;
   color: white;
@@ -352,7 +356,7 @@
 }
 
 .winner-banner {
-  font-size: 3rem;
+  font-size: 3.4rem; /* Increased from 3rem */
   color: #ffd700;
   text-align: center;
   font-family: "CormorantUnicase", sans-serif;
@@ -364,7 +368,7 @@
 
 .resetButton {
   padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Increased from 1.2rem */
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -393,7 +397,7 @@
 
 .rematchButton {
   padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Increased from 1.2rem */
   font-family: "CormorantUnicase", sans-serif;
   border: none;
   border-radius: 0.25rem;
