@@ -81,23 +81,11 @@
 }
 
 @font-face {
-  font-family: "Trickster";
-  src: url("../assets/fonts/Trickster-master/webfonts/Trickster-Regular.woff2")
-      format("woff2"),
-    url("../assets/fonts/Trickster-master/webfonts/Trickster-Regular.woff")
-      format("woff");
+  font-family: "CormorantUnicase";
+  src: url("/fonts/CormorantUnicase-Medium.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
-
-@font-face {
-  font-family: "Fantasie";
-  src: url("../assets/fonts/fantasieartistique/FantasieArtistique.otf")
-      format("opentype"),
-    url("../assets/fonts/fantasieartistique/FantasieArtistique.ttf")
-      format("truetype");
-  font-weight: normal;
-  font-style: normal;
+  font-display: swap;
 }
 
 #logo {
@@ -105,7 +93,7 @@
   font-size: 1.8rem; /* Slightly smaller */
   color: var(--primary-text-color);
   width: 100%;
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   letter-spacing: 2px;
   margin-bottom: 0.25rem;
 }
@@ -117,7 +105,7 @@
   margin: 0.5rem 0 1rem; /* Reduced margins */
   color: #ffd700;
   width: 100%;
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   letter-spacing: 1px;
 }
 
@@ -154,7 +142,7 @@
 /* Reset button styling */
 .resetButton {
   padding: 0.75rem 1.5rem;
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   font-size: 1.2rem;
   border: none;
   border-radius: 0.25rem;
@@ -215,7 +203,7 @@
 }
 
 .countdown {
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   text-align: center;
   padding: 2rem;
 }
@@ -251,7 +239,7 @@
 .join-options button,
 .join-game button:not(.back-button),
 .create-game button:not(.back-button) {
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   padding: 15px 30px;
   font-size: 1.2rem;
   border: none;
@@ -263,12 +251,9 @@
   transition: background-color 0.2s;
 }
 
-.join-game h2 {
-  font-family: "Fantasie", serif;
-}
-
+.join-game h2,
 .create-game h2 {
-  font-family: "Fantasie", serif;
+  font-family: "CormorantUnicase", serif;
 }
 
 .join-options button:hover {
@@ -293,7 +278,7 @@
 
 .back-button {
   background-color: #666 !important;
-  font-family: "Fantasie", serif !important;
+  font-family: "CormorantUnicase", serif !important;
   padding: 15px 30px;
   font-size: 1.2rem;
   border: none;
@@ -310,7 +295,7 @@
 }
 
 .game-code {
-  font-family: "Fantasie", serif;
+  font-family: "CormorantUnicase", serif;
   text-align: center;
 }
 
@@ -363,14 +348,14 @@
   text-align: center;
   max-width: 600px;
   font-size: 1.5rem;
-  font-family: "Fantasie", serif;
+  font-family: "CormorantUnicase", serif;
 }
 
 .winner-banner {
   font-size: 3rem;
   color: #ffd700;
   text-align: center;
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
 }
 
 .winner-banner.opponent-win {
@@ -409,7 +394,7 @@
 .rematchButton {
   padding: 0.75rem 1.5rem;
   font-size: 1.2rem;
-  font-family: "Trickster", sans-serif;
+  font-family: "CormorantUnicase", sans-serif;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -456,7 +441,7 @@
   top: 1rem;
   right: 1rem;
   padding: 0.5rem 1rem;
-  font-family: "Fantasie", serif;
+  font-family: "CormorantUnicase", serif;
   font-size: 1rem;
   background-color: #666;
   color: white;
@@ -499,4 +484,24 @@
   .score {
     font-size: 1.8rem;
   }
+}
+
+/* Replace all instances of "MedievalSharp" with "CormorantUnicase" */
+.join-game h2,
+.create-game h2,
+.game-code,
+.back-button,
+.final-event,
+.result-message,
+.logout-button,
+#logo,
+.round,
+.resetButton,
+.countdown,
+.join-options button,
+.join-game button:not(.back-button),
+.create-game button:not(.back-button),
+.winner-banner,
+.rematchButton {
+  font-family: "CormorantUnicase", serif;
 }
