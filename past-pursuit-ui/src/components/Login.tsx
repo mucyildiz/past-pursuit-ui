@@ -15,7 +15,7 @@ export default function Login({ onLogin }: LoginProps) {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://api.pastpursuit.io/past-pursuit/users",
+        "https://api.pastpursuit.io/api/past-pursuit/users",
         {
           method: "POST",
           headers: {
