@@ -8,7 +8,6 @@ interface LoginProps {
 
 export default function Login({ onLogin }: LoginProps) {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +22,6 @@ export default function Login({ onLogin }: LoginProps) {
           },
           body: JSON.stringify({
             name: username,
-            password: password,
           }),
         }
       );
@@ -52,13 +50,6 @@ export default function Login({ onLogin }: LoginProps) {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <button type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
