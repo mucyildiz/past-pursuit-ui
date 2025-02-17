@@ -246,7 +246,12 @@ export default function Game() {
       }, 1000);
       return () => clearTimeout(timer);
     } else {
-      const userInfo = { id: 0, name: playerName, wins: 0, losses: 0 };
+      const userInfo = currentUser || {
+        id: 0,
+        name: playerName,
+        wins: 0,
+        losses: 0,
+      };
       webSocketService.sendMessage({
         eventType: GameEventType.ROUND_START,
         gameCode: gameCode,
