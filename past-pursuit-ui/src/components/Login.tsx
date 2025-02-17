@@ -18,7 +18,7 @@ export default function Login({ onLogin }: LoginProps) {
     const top = window.screenY + (window.outerHeight - height) / 2;
 
     window.open(
-      "https://api.pastpursuit.io/api/past-pursuit/auth/google",
+      "https://api.pastpursuit.io/api/auth/google",
       "Google Login",
       `width=${width},height=${height},left=${left},top=${top}`
     );
