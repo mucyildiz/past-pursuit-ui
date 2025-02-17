@@ -32,6 +32,8 @@ class WebSocketService {
   private socket!: WebSocket;
   private messageHandlers: ((data: GameState) => void)[] = [];
   private isConnected: boolean = false;
+  private pingInterval: number | null = null;
+  private readonly PING_INTERVAL = 20000;
 
   private constructor() {
     this.connect();
@@ -51,6 +53,7 @@ class WebSocketService {
       this.socket.onopen = () => {
         console.log("WebSocket connected");
         this.isConnected = true;
+        this.startPing();
       };
 
       this.socket.onmessage = (event) => {
@@ -62,18 +65,35 @@ class WebSocketService {
       this.socket.onclose = () => {
         console.log("WebSocket connection closed");
         this.isConnected = false;
+        this.stopPing();
         this.socket.close();
-        window.location.reload(); // Force refresh on connection loss
+        window.location.reload();
       };
 
       this.socket.onerror = (error) => {
         console.error("WebSocket error:", error);
         alert("Failed to connect to game server. Please try again later.");
+        this.stopPing();
         this.socket.close();
       };
     } catch (error) {
       console.error("Failed to create WebSocket connection:", error);
       alert("Failed to connect to game server. Please try again later.");
+    }
+  }
+
+  private startPing() {
+    this.pingInterval = window.setInterval(() => {
+      if (this.socket.readyState === WebSocket.OPEN) {
+        this.socket.send(JSON.stringify({ type: "PING" }));
+      }
+    }, this.PING_INTERVAL);
+  }
+
+  private stopPing() {
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+      this.pingInterval = null;
     }
   }
 
@@ -96,6 +116,7 @@ class WebSocketService {
 
   public close() {
     if (this.isConnected) {
+      this.stopPing();
       this.socket.close();
       this.isConnected = false;
     }
