@@ -57,7 +57,6 @@ class WebSocketService {
       this.socket = new WebSocket(this.WS_URL);
 
       this.socket.onopen = () => {
-        console.log("WebSocket connected");
         this.isConnected = true;
         this.reconnectAttempts = 0; // Reset attempts on successful connection
         this.startPing();
@@ -65,11 +64,9 @@ class WebSocketService {
 
       this.socket.onmessage = (event) => {
         if (event.data === "PONG") {
-          console.debug("Received PONG");
           return;
         }
 
-        console.debug("Received WebSocket message:", event.data);
         try {
           const gameState: GameState = JSON.parse(event.data);
           this.messageHandlers.forEach((handler) => handler(gameState));
@@ -154,7 +151,6 @@ class WebSocketService {
 
   public sendMessage(event: WebSocketMessage) {
     if (this.socket.readyState === WebSocket.OPEN) {
-      console.log("Sending WebSocket message:", event);
       this.socket.send(JSON.stringify(event));
     } else {
       console.error("WebSocket not open, state:", this.socket.readyState);

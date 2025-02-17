@@ -65,8 +65,6 @@ export default function Game() {
   const handleGameState = useCallback(
     (gameState: GameState) => {
       if (gameState.gameCode !== gameCode) return;
-      console.log("gameState", gameState);
-
       // Set current user info when we find ourselves in the users array
       const user = gameState.users.find((u) => u.name === playerName);
       if (user && !currentUser) {
@@ -102,6 +100,9 @@ export default function Game() {
           setGuessTimer(null);
           setGameStartCountdown(3);
           setIsJoining(true);
+          setRematchProposed(false);
+          setRematchVotes(0);
+          setRematchTimer(null);
           break;
         case "WAITING_FOR_GUESSES":
           setWaitingForOpponent(false);
