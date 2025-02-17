@@ -65,6 +65,7 @@ export default function Game() {
   const handleGameState = useCallback(
     (gameState: GameState) => {
       if (gameState.gameCode !== gameCode) return;
+      console.log("gameState", gameState);
 
       // Set current user info when we find ourselves in the users array
       const user = gameState.users.find((u) => u.name === playerName);
