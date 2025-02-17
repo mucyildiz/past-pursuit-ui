@@ -34,6 +34,12 @@ class WebSocketService {
   private isConnected: boolean = false;
   private pingInterval: number | null = null;
   private readonly PING_INTERVAL = 20000;
+  private readonly WS_URL = import.meta.env.DEV
+    ? "ws://localhost:8080/"
+    : "wss://api.pastpursuit.io/";
+  private reconnectAttempts = 0;
+  private readonly MAX_RECONNECT_ATTEMPTS = 3;
+  private readonly RECONNECT_DELAY = 2000; // 2 seconds
 
   private constructor() {
     this.connect();
@@ -48,38 +54,62 @@ class WebSocketService {
 
   private connect() {
     try {
-      this.socket = new WebSocket("wss://api.pastpursuit.io/");
+      this.socket = new WebSocket(this.WS_URL);
 
       this.socket.onopen = () => {
         console.log("WebSocket connected");
         this.isConnected = true;
+        this.reconnectAttempts = 0; // Reset attempts on successful connection
         this.startPing();
       };
 
       this.socket.onmessage = (event) => {
         if (event.data === "PONG") {
-          console.log("Received PONG");
+          console.debug("Received PONG");
           return;
         }
 
-        console.log("Received WebSocket message:", event.data);
-        const gameState: GameState = JSON.parse(event.data);
-        this.messageHandlers.forEach((handler) => handler(gameState));
+        console.debug("Received WebSocket message:", event.data);
+        try {
+          const gameState: GameState = JSON.parse(event.data);
+          this.messageHandlers.forEach((handler) => handler(gameState));
+        } catch (error) {
+          console.error("Failed to parse WebSocket message:", error);
+        }
       };
 
-      this.socket.onclose = () => {
-        console.log("WebSocket connection closed");
+      this.socket.onclose = (event) => {
+        console.warn("WebSocket connection closed", {
+          code: event.code,
+          reason: event.reason,
+          wasClean: event.wasClean,
+        });
         this.isConnected = false;
         this.stopPing();
-        this.socket.close();
-        window.location.reload();
+
+        // Only attempt to reconnect if it wasn't a clean closure
+        if (
+          !event.wasClean &&
+          this.reconnectAttempts < this.MAX_RECONNECT_ATTEMPTS
+        ) {
+          console.log(
+            `Attempting to reconnect (${this.reconnectAttempts + 1}/${
+              this.MAX_RECONNECT_ATTEMPTS
+            })...`
+          );
+          setTimeout(() => {
+            this.reconnectAttempts++;
+            this.connect();
+          }, this.RECONNECT_DELAY);
+        } else if (this.reconnectAttempts >= this.MAX_RECONNECT_ATTEMPTS) {
+          console.error("Max reconnection attempts reached");
+          alert("Lost connection to game server. Please refresh the page.");
+          window.location.reload();
+        }
       };
 
       this.socket.onerror = (error) => {
         console.error("WebSocket error:", error);
-        alert("Failed to connect to game server. Please try again later.");
-        this.stopPing();
-        this.socket.close();
       };
     } catch (error) {
       console.error("Failed to create WebSocket connection:", error);
@@ -88,9 +118,21 @@ class WebSocketService {
   }
 
   private startPing() {
+    this.stopPing(); // Clear any existing interval first
     this.pingInterval = window.setInterval(() => {
       if (this.socket.readyState === WebSocket.OPEN) {
-        this.socket.send("PING");
+        try {
+          this.socket.send("PING");
+        } catch (error) {
+          console.error("Failed to send PING:", error);
+          this.stopPing();
+        }
+      } else {
+        console.warn(
+          "Socket not open during ping attempt, state:",
+          this.socket.readyState
+        );
+        this.stopPing();
       }
     }, this.PING_INTERVAL);
   }

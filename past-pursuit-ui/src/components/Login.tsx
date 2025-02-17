@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import User from "../models/User";
 
@@ -6,10 +6,77 @@ interface LoginProps {
   onLogin: (user: User) => void;
 }
 
+const isDevelopment = import.meta.env.DEV;
+
+const generateRandomName = () => {
+  const adjectives = [
+    "Happy",
+    "Lucky",
+    "Clever",
+    "Brave",
+    "Mighty",
+    "Swift",
+    "Wise",
+  ];
+  const nouns = [
+    "Panda",
+    "Tiger",
+    "Eagle",
+    "Dragon",
+    "Phoenix",
+    "Warrior",
+    "Knight",
+  ];
+  const randomNum = Math.floor(Math.random() * 1000);
+
+  return `${adjectives[Math.floor(Math.random() * adjectives.length)]}${
+    nouns[Math.floor(Math.random() * nouns.length)]
+  }${randomNum}`;
+};
+
 export default function Login({ onLogin }: LoginProps) {
   const [showUsernameForm, setShowUsernameForm] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const createDevUser = async () => {
+      if (isDevelopment) {
+        const randomName = generateRandomName();
+        try {
+          const response = await fetch(
+            "http://localhost:8080/api/past-pursuit/users",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: randomName,
+                email: `${randomName.toLowerCase()}@dev.local`,
+              }),
+            }
+          );
+
+          if (response.ok) {
+            const user = await response.json();
+            onLogin(user);
+          } else {
+            console.error("Failed to create dev user");
+          }
+        } catch (error) {
+          console.error("Error creating dev user:", error);
+        }
+      }
+    };
+
+    createDevUser();
+  }, [onLogin]);
+
+  // Skip rendering login UI in development
+  if (isDevelopment) {
+    return null;
+  }
 
   const handleGoogleLogin = () => {
     const width = 500;
