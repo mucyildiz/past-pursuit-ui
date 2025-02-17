@@ -57,6 +57,11 @@ class WebSocketService {
       };
 
       this.socket.onmessage = (event) => {
+        if (event.data === "PONG") {
+          console.log("Received PONG");
+          return;
+        }
+
         console.log("Received WebSocket message:", event.data);
         const gameState: GameState = JSON.parse(event.data);
         this.messageHandlers.forEach((handler) => handler(gameState));
@@ -85,7 +90,7 @@ class WebSocketService {
   private startPing() {
     this.pingInterval = window.setInterval(() => {
       if (this.socket.readyState === WebSocket.OPEN) {
-        this.socket.send(JSON.stringify({ type: "PING" }));
+        this.socket.send("PING");
       }
     }, this.PING_INTERVAL);
   }
